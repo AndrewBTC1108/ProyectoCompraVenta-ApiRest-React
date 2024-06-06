@@ -6,6 +6,7 @@ import InventarioActivos from "./views/principal/InventarioActivos";
 import RegistrarCliente from "./views/principal/RegistrarCliente"
 import ClientesRegistrados from "./views/principal/ClientesRegistrados";
 import Inicio from "./views/principal/Inicio"
+import Prestamos from "./views/prestamos/Prestamos";
 
 const router = createBrowserRouter([
     {
@@ -27,6 +28,10 @@ const router = createBrowserRouter([
             {
                 path: '/clientesRegistrados',
                 element: <ClientesRegistrados />
+            },
+            {
+                path: '/prestamo',
+                element: <Prestamos />
             }
         ]
     },

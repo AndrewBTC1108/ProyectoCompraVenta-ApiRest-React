@@ -8,6 +8,10 @@ export default function Cliente({cliente, handleCliente, handelModal, deleteCli,
     const {currentUrl} = urlP;//url de los datos para refrescarlos cuando se haga una accion sea editar o eliminar
     const {handleSetUrl} = handleUrl;
 
+    //handle para prestamos
+    const handlePrestamo = () => {
+      handleSetCliente(cliente);
+    }
     //handle apra editar
     const handleEdit = () => {
       handleSetCliente(cliente);//colocar el clinente seleccionado y su info en el hook
@@ -42,10 +46,13 @@ export default function Cliente({cliente, handleCliente, handelModal, deleteCli,
             <td className="text-left py-2 px-4 border-b">{telefono}</td>
             <td className="text-left py-2 px-4 border-b">{direccion_residencia}</td>
             <td className="text-left py-2 px-4 border-b flex gap-2">
-            <Link>
+            <Link
+              to={'/prestamo'}
+            >
                 <button
+                    onClick={handlePrestamo}
                     className="bg-sky-600 hover:bg-sky-700 text-white px-2 py-1 rounded"
-                >Prestamo</button>
+                >Prestamos</button>
               </Link>
               <button
                   onClick={handleEdit}

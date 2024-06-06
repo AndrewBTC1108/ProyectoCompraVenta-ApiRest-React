@@ -58,6 +58,7 @@ export const useAuth = ({middleware, redirectIfAuthenticated}) => {
     }
 
     useEffect(() => {
+        console.log("Middleware:", middleware);
         if (middleware === 'guest' && redirectIfAuthenticated && user){
             navigate(redirectIfAuthenticated)
         }
