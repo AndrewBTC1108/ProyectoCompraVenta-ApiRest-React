@@ -2,7 +2,7 @@ import useCompraVenta from "../../hooks/useCompraVenta";
 import InputError from "../../components/InputError";
 import { useState } from "react";
 export default function RegistrarCliente() {
-  const { createCliente } = useCompraVenta();//use the context
+  const { createData } = useCompraVenta();//use the context
   const [cedula, setCedula] = useState('');
   const [nombre, setNombre] = useState('');
   const [apellido, setApellido] = useState('');
@@ -12,13 +12,14 @@ export default function RegistrarCliente() {
 
   const handleCreateCliente = async (e) => {
     e.preventDefault();
-    const success = await createCliente({
+    const success = await createData({
       cedula,
       nombre,
       apellido,
       telefono,
       direccion_residencia,
-      setErrors
+      setErrors,
+      urlAx : 'api/clientes'
     });
     if(success){
       setCedula('');

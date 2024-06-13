@@ -7,21 +7,29 @@ const CompraVentaContext = createContext();
 
 const CompraVentaProvider = ({children}) => {
     const [cliente, setCliente] = useState({});
+    const [producto, setProducto] = useState({});
+    //Modals
     const [modalCliente, setModalCliente] = useState({isOpen: false});
+    const [modalProducto, setModalProducto] = useState({isOpen: false, isEditing: false});
     const [url, setUrl] = useState('');//para almacenar la url a la que haremos el llamado para refrescar los datos
 
-    const createCliente = async ({setErrors, ...props}) => {
+    const createData = async ({setErrors, urlAx, ...props}) => {
         const token = localStorage.getItem('AUTH_TOKEN');
         if(token){
             try {
-                const {data} = await clienteAxios.post('api/clientes', {...props},
+                const {data} = await clienteAxios.post(urlAx, {...props},
                 {
                     headers: {
                         Authorization: `Bearer ${token}`
                     }
                 });
                 //vaciar el arreglo de errores
-                setErrors([])
+                setErrors([]);
+                //url por si no es creado por medio de modal
+                if(url) {
+                    await mutate(url);
+                    setUrl('');
+                }
                 //añadimos la notificacion de exito
                 toast.success(data.message)
                 return true;
@@ -31,11 +39,11 @@ const CompraVentaProvider = ({children}) => {
         }
     }
 
-    const updateCliente = async ({id, setErrors, ...props}) => {
+    const updateData = async ({ setErrors, urlAx, ...props}) => {
         const token = localStorage.getItem('AUTH_TOKEN');
         if(token){
             try {
-                const {data} = await clienteAxios.patch(`api/clientes/${id}`,{...props},
+                const {data} = await clienteAxios.patch(urlAx, {...props},
                 {
                     headers: {
                         Authorization: `Bearer ${token}`
@@ -44,21 +52,21 @@ const CompraVentaProvider = ({children}) => {
                 //vaciar el arreglo de errores                   
                 setErrors([])
                 await mutate(url);
-                handleCloseModalCliente();
                 setUrl('');
                 //añadimos la notificacion de exito
                 toast.success(data.message)
+                return true
             } catch (error) {
                 setErrors(error.response.data.errors);
             }
         }
     }
 
-    const deleteCliente = async (id, urlD) => {
+    const deleteData = async ({urlAx, urlD}) => {
         const token = localStorage.getItem('AUTH_TOKEN');
         if(token) {
             try {
-                const {data} = await clienteAxios.delete(`api/clientes/${id}`, {
+                const {data} = await clienteAxios.delete(urlAx, {
                     headers:{
                         Authorization: `Bearer ${token}`
                     }
@@ -70,11 +78,16 @@ const CompraVentaProvider = ({children}) => {
             }
         }
     }
+
     //handle to set cliente
     const handleSetCliente = cliente => {
         setCliente(cliente);
     }
-
+    //handle to set Producto
+    const handleSetProducto = producto => {
+        setProducto(producto);
+        console.log(producto)
+    }
     //handle to open
     const handleClickModalCliente = () => {
         setModalCliente({ isOpen: true });
@@ -85,6 +98,16 @@ const CompraVentaProvider = ({children}) => {
         setUrl('');
     }
 
+    //handle to open
+    const handleClickModalProducto = (isEditing) => {
+        setModalProducto({ isOpen: true, isEditing });
+    }
+    //handle to close
+    const handleCloseModalProducto = () => {
+        setModalProducto({ isOpen: false, isEditing: false });
+        setUrl('');
+    }
+
     const handleSetUrl = url => {
         setUrl(url);
     }
@@ -92,14 +115,19 @@ const CompraVentaProvider = ({children}) => {
     return (
         <CompraVentaContext.Provider 
             value={{
-                createCliente,
-                updateCliente,
-                deleteCliente,
+                createData,
+                updateData,
+                deleteData,
                 handleSetCliente,
+                handleSetProducto,
+                producto,
                 cliente,
                 handleClickModalCliente,
                 handleCloseModalCliente,
+                handleClickModalProducto,
+                handleCloseModalProducto,
                 modalCliente,
+                modalProducto,
                 handleSetUrl
             }}>{/* Prop value: Este es el valor que se va a pasar a través del contexto. generalmente aquí es donde se ponen los datos y funciones que quieres compartir con otros componentes. */}
             {/* CompraVentaContext.Provider provee el valor del contexto a todos los componentes hijos que están envueltos por él. Cualquier componente que esté dentro de CompraVentaProvider tendrá acceso al contexto CompraVentaContext. */}

@@ -5,6 +5,7 @@ import { useAuth } from "../hooks/useAuth";
 import { ToastContainer } from "react-toastify";
 import { customStylesModal } from "../helpers/index";
 import ModalCliente from "../components/Modals/ModalCliente";
+import ModalProducto from "../components/Modals/ModalProducto";
 import useCompraVenta from "../hooks/useCompraVenta";
 //hojas de estilo css
 import "react-toastify/dist/ReactToastify.css"
@@ -13,7 +14,7 @@ ReactModal.setAppElement('#root')
 
 export default function Layout() {
   useAuth({middleware:'auth'});
-  const { modalCliente } = useCompraVenta();
+  const { modalCliente, modalProducto } = useCompraVenta();
   const { customStyles } = customStylesModal()
     
   return (
@@ -35,6 +36,12 @@ export default function Layout() {
 
       <ReactModal isOpen={modalCliente.isOpen} style={customStyles}>
         <ModalCliente />
+      </ReactModal>
+
+      <ReactModal isOpen={modalProducto.isOpen} style={customStyles}>
+        <ModalProducto 
+          isEditing={modalProducto.isEditing} 
+        />
       </ReactModal>
 
       <ToastContainer />

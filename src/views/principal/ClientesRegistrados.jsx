@@ -4,9 +4,10 @@ import useSWR from "swr";
 import { fetcher } from "../../hooks/Fetcher";
 import Cliente from "../../components/Cliente";
 import useCompraVenta from "../../hooks/useCompraVenta";
+import Paginador from "../../components/Paginador";
 
 export default function ClientesRegistrados() {
-  const {handleSetCliente, handleClickModalCliente, deleteCliente, handleSetUrl} = useCompraVenta();
+  const {handleSetCliente, handleClickModalCliente, deleteData, handleSetUrl} = useCompraVenta();
   const [page, setPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState('');
   const [currentUrl, setCurrentUrl] = useState(`api/clientes?page=${page}&search=${searchTerm}`);
@@ -37,7 +38,7 @@ export default function ClientesRegistrados() {
     <>
       <h1 className="mb-4 text-center text-4xl font-black py-10">Clientes Registrados</h1>
 
-      <div className="bg-gray-300 shadow-md rounded-md mt-10 px-5 py-10 w-4/5 m-auto">
+      <div className="bg-gray-300 shadow-md rounded-md mt-10 px-5 py-10 w-5/6 m-auto">
         <div className='mb-4 flex flex-col text-center'>
           <label
               className="text-slate-800 text-xl font-normal"
@@ -81,7 +82,7 @@ export default function ClientesRegistrados() {
                             cliente={clienteData}
                             handleCliente={{handleSetCliente}}
                             handelModal={{handleClickModalCliente}}
-                            deleteCli={{deleteCliente}}
+                            deleteCli={{deleteData}}
                             urlP={{currentUrl}}
                             handleUrl={{handleSetUrl}}
                         />
@@ -91,41 +92,12 @@ export default function ClientesRegistrados() {
           </table>
         </div>
         {clientesData && (
-          <div className="my-1 flex justify-center space-x-2">
-            <button
-                onClick={() => handlePageChange(page - 1)}
-                disabled={page === 1}
-                className={`px-4 py-2 border rounded ${page === 1 ? 'bg-gray-300 text-white' : 'bg-white text-blue-500 hover:bg-blue-500 hover:text-white'}`}
-            >
-                Anterior
-            </button>
-            {/* Esto crea un array de números de página desde 1 hasta usersData.last_page y luego mapea cada número de página a un botón*/}
-            {Array.from({ length: clientesData.last_page }, (_, i) => i + 1).map(pageNumber => {
-                // Solo muestra los números de página si están cerca del número de página actual, o si son el primer o último número de página
-                if (pageNumber === 1 || pageNumber === clientesData.last_page || (pageNumber >= page - 1 && pageNumber <= page + 1)) {
-                    //al ser una iteracion el pageNumber representa los numeros de las paginas a las que se puede dar click
-                    return (
-                        <button
-                            key={pageNumber}
-                            onClick={() => handlePageChange(pageNumber)}
-                            disabled={pageNumber === page}
-                            className={`px-4 py-2 border rounded ${pageNumber === page ? 'bg-blue-500 text-white' : 'bg-white text-blue-500 hover:bg-blue-500 hover:text-white'}`}
-                        >
-                            {pageNumber}
-                        </button>
-                    );
-                }
-            })}
-            <button
-                onClick={() => handlePageChange(page + 1)}
-                disabled={page === clientesData.last_page}
-                className={`px-4 py-2 border rounded ${page === clientesData.last_page ? 'bg-gray-300 text-white' : 'bg-white text-blue-500 hover:bg-blue-500 hover:text-white'}`}
-            >
-                Siguiente
-            </button>
-          </div>
+          <Paginador 
+              totalPages={clientesData.last_page} 
+              currentPage={page} 
+              onPageChange={handlePageChange} 
+          />
         )}
-
       </div>
     </>
   )

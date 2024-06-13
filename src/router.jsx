@@ -7,6 +7,7 @@ import RegistrarCliente from "./views/principal/RegistrarCliente"
 import ClientesRegistrados from "./views/principal/ClientesRegistrados";
 import Inicio from "./views/principal/Inicio"
 import Prestamos from "./views/prestamos/Prestamos";
+import CrearProducto from "./views/productosCliente/CrearProducto";
 
 const router = createBrowserRouter([
     {
@@ -32,6 +33,10 @@ const router = createBrowserRouter([
             {
                 path: '/prestamo',
                 element: <Prestamos />
+            },
+            {
+                path: '/crearProducto',
+                element: <CrearProducto/>
             }
         ]
     },

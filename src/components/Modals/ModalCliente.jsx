@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import useCompraVenta from "../../hooks/useCompraVenta"
 import InputError from "../InputError";
 export default function ModalCliente() {
-    const { handleCloseModalCliente, cliente, updateCliente} = useCompraVenta();
+    const { handleCloseModalCliente, cliente, updateData} = useCompraVenta();
     //manejamos un objeto el cual iremos mapeando con los datos que vayamos a editar cff
     const [formData, setFormData] = useState({
         cedula: '',
@@ -37,7 +37,7 @@ export default function ModalCliente() {
         });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         //prevenir accion por default
         e.preventDefault();
         //objeto vacio el cual iremos mapeando
@@ -50,11 +50,14 @@ export default function ModalCliente() {
                 updatedData[key] = formData[key];
             }
         }
-        updateCliente({
-            id: cliente.id,
+        const success = await updateData({
             ...updatedData,//enviamos la info que hemos cambiado solamente
-            setErrors
+            setErrors,
+            urlAx : `api/clientes/${cliente.id}`
         });
+        if(success){
+            handleCloseModalCliente()
+        }
     };
   return (
     <>

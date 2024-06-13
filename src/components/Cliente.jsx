@@ -4,15 +4,15 @@ export default function Cliente({cliente, handleCliente, handelModal, deleteCli,
     const {id, cedula, nombre, apellido, telefono, direccion_residencia} = cliente;
     const { handleSetCliente } = handleCliente;
     const { handleClickModalCliente } = handelModal;
-    const { deleteCliente } = deleteCli;
+    const { deleteData } = deleteCli;
     const {currentUrl} = urlP;//url de los datos para refrescarlos cuando se haga una accion sea editar o eliminar
     const {handleSetUrl} = handleUrl;
 
     //handle para prestamos
-    const handlePrestamo = () => {
+    const capturarCliente = () => {
       handleSetCliente(cliente);
     }
-    //handle apra editar
+    //handle para editar
     const handleEdit = () => {
       handleSetCliente(cliente);//colocar el clinente seleccionado y su info en el hook
       handleClickModalCliente();//abrir modal
@@ -32,7 +32,10 @@ export default function Cliente({cliente, handleCliente, handelModal, deleteCli,
         confirmButtonText: "Eliminar!"
       }).then((result) => {
         if (result.isConfirmed) {
-          deleteCliente(id, currentUrl);//borrar cliente, pasamos id y url, de esta manera no me dio error de retraso en tiempo
+          deleteData({
+            urlAx: `api/clientes/${id}`, 
+            urlD: currentUrl
+          });//borrar cliente, pasamos id y url, de esta manera no me dio error de retraso en tiempo
         }
       });
     }
@@ -46,13 +49,21 @@ export default function Cliente({cliente, handleCliente, handelModal, deleteCli,
             <td className="text-left py-2 px-4 border-b">{telefono}</td>
             <td className="text-left py-2 px-4 border-b">{direccion_residencia}</td>
             <td className="text-left py-2 px-4 border-b flex gap-2">
-            <Link
-              to={'/prestamo'}
-            >
+              <Link
+                to={'/prestamo'}
+              >
                 <button
-                    onClick={handlePrestamo}
+                    onClick={capturarCliente}
                     className="bg-sky-600 hover:bg-sky-700 text-white px-2 py-1 rounded"
                 >Prestamos</button>
+              </Link>
+              <Link
+                to={'/crearProducto'}
+              >
+                <button
+                    onClick={capturarCliente}
+                    className="bg-sky-600 hover:bg-sky-700 text-white px-2 py-1 rounded"
+                >Productos</button>
               </Link>
               <button
                   onClick={handleEdit}
