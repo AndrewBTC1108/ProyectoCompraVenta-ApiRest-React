@@ -1,5 +1,5 @@
-import { Link } from 'react-router-dom'
-import Swal from 'sweetalert2'
+import { Link } from 'react-router-dom';
+import Swal from 'sweetalert2';
 export default function Cliente({cliente, handleCliente, handelModal, deleteCli, urlP, handleUrl }) {
     const {id, cedula, nombre, apellido, telefono, direccion_residencia} = cliente;
     const { handleSetCliente } = handleCliente;

@@ -109,12 +109,12 @@ export default function CrearProducto() {
             >Crear Producto</button>
           </div>
           {productosData && (
-          <Paginador 
-              totalPages={productosData.last_page} 
-              currentPage={page} 
-              onPageChange={handlePageChange} 
-          />
-        )}
+            <Paginador 
+                totalPages={productosData.last_page} 
+                currentPage={page} 
+                onPageChange={handlePageChange} 
+            />
+          )}
       </div>
     </>
   )

@@ -4,16 +4,15 @@ import {fetcher} from "../hooks/Fetcher"
 import Button from "./Button"
 import Categoria from "./Categoria"
 import { useState } from "react"
-export default function Navigate() {
 
-    let categories;
+export default function Navigate() {
     let token = localStorage.getItem('AUTH_TOKEN');
     const [currentCategory, setcurrentCategory] = useState({id:0})
 
     const {data: availableCategoriesData, error: availableCategoriesError} = useSWR(
         token ? 'api/categorias' : null, fetcher
     );
-    categories = availableCategoriesData ? availableCategoriesData.data : [];
+    let categories = availableCategoriesData ? availableCategoriesData.data : [];
     //descructuring
     const {logout} = useAuth({middleware: 'auth'});
 

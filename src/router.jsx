@@ -2,12 +2,13 @@ import { createBrowserRouter } from "react-router-dom"
 import AuthLayout from "./Layouts/AuthLayout";
 import Layout from "./Layouts/Layout";//users
 import Login from "./views/auth/Login";
-import InventarioActivos from "./views/principal/InventarioActivos";
+import Recodatorios from "./views/principal/Recodatorios";
 import RegistrarCliente from "./views/principal/RegistrarCliente"
 import ClientesRegistrados from "./views/principal/ClientesRegistrados";
 import Inicio from "./views/principal/Inicio"
 import Prestamos from "./views/prestamos/Prestamos";
 import CrearProducto from "./views/productosCliente/CrearProducto";
+import InfoPrestamo from "./views/prestamos/InfoPrestamo";
 
 const router = createBrowserRouter([
     {
@@ -23,8 +24,8 @@ const router = createBrowserRouter([
                 element: <RegistrarCliente/>
             },
             {
-                path: '/inventarioActivos',
-                element: <InventarioActivos />
+                path: '/recordatorios',
+                element: <Recodatorios />
             },
             {
                 path: '/clientesRegistrados',
@@ -33,6 +34,10 @@ const router = createBrowserRouter([
             {
                 path: '/prestamo',
                 element: <Prestamos />
+            },
+            {
+                path: '/infoPrestamo',
+                element: <InfoPrestamo />
             },
             {
                 path: '/crearProducto',
